@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<launch>
+        <node pkg="car_control_2" name="lidar_publisher" type="lidar_publisher.py"/>
+	<node pkg="car_control_2" name="encoder" type="encoder.py" />
+	<node pkg="car_control_2" name="transform_lidar_base" type="tf.py" />
+	<node pkg="rosserial_arduino" name="serial_arduino" type="serial_node.py">
+	<param name="_port" value="/dev/ttyACM0"/>
+	</node>
+</launch>
