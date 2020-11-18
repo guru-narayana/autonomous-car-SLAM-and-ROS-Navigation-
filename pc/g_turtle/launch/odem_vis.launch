@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+  <node pkg="g_turtle" type="keyboard_control.py" name="teleop_control"/>
+  <node pkg="g_turtle" type="odem.py" name="odometry"/>
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find g_turtle)/config/odem_map.rviz"/>
+
+</launch>
