@@ -1,0 +1,26 @@
+<launch>
+
+  <param name="robot_description" textfile="$(find robot_simulation)/urdf/robot_simulation.urdf" />
+  <rosparam file="$(find arm_control)/config/arm_control.yaml" command="load"/>
+
+  <include
+    file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find robot_simulation)/worlds/my_world.world" />
+    <arg name="use_sim_time" value="true"/>
+ </include>
+ 
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+    output="screen" ns="/robot_simulation" args="joint1_position_controller joint2_position_controller joint3_position_controller joint4_position_controller joint_state_controller"/>
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+    respawn="false" output="screen">
+    <remap from="/joint_states" to="/robot_simulation/joint_states" />
+  </node>
+  <node pkg="tf" type="static_transform_publisher" name="link1_broadcaster" args="0.084 0 0.023 -1.57 0 -1.74533 base_link camera 100" />
+  <node
+    name="spawn_model"
+    pkg="gazebo_ros"
+    type="spawn_model"
+    args="-file $(find robot_simulation)/urdf/robot_simulation.urdf -urdf -model robot_simulation"
+    output="screen" />
+</launch>

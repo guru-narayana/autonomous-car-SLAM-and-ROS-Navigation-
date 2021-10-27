@@ -1,0 +1,17 @@
+MyRobot:
+  joints_update:
+    type: joint_state_controller/JointStateController
+    publish_rate: 50
+    
+  Joint1_PositionController:
+    type: position_controllers/JointPositionController  
+    joint: j4
+  Joint2_PositionController:
+    type: position_controllers/JointPositionController  
+    joint: j3
+  Joint3_PositionController:
+    type: position_controllers/JointPositionController  
+    joint: j2
+  Joint4_PositionController:
+    type: position_controllers/JointPositionController  
+    joint: j1
