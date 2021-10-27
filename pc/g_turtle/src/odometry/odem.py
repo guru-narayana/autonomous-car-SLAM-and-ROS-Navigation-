@@ -22,7 +22,7 @@ def odom_callback(vel):
     dt = (current_time-past_time).to_sec()
     # calculating distance using velocities
     v = vel.linear.x
-    vtheta = vel.angular.z
+    vtheta = -vel.angular.z
     x += (v * cos(theta))* dt
     y += (v * sin(theta)) * dt
     theta += vtheta * dt
@@ -30,7 +30,7 @@ def odom_callback(vel):
     # transforming the eulars into quaternions
     q = tf_conversions.transformations.quaternion_from_euler(0, 0, theta)
     # publishing the transform between /odom and base_link
-    t.header.stamp = rospy.Time.now()
+    t.header.stamp = current_time
     t.header.frame_id = "odom"
     t.child_frame_id = "base_link"
     t.transform.translation.x = x
@@ -40,7 +40,6 @@ def odom_callback(vel):
     t.transform.rotation.y = q[1]
     t.transform.rotation.z = q[2]
     t.transform.rotation.w = q[3]
-    odom_broadcaster.sendTransform(t)
     #defining the odometry message
     odom = Odometry()
     odom.header.stamp = current_time
@@ -51,9 +50,8 @@ def odom_callback(vel):
     odom.child_frame_id = "base_link"
     odom.twist.twist = Twist(Vector3(v, 0, 0), Vector3(0, 0, vtheta))
     # publish the message
+    odom_broadcaster.sendTransform(t)
     odom_pub.publish(odom)
-    rospy.loginfo(t)
-
 # initialising the node
 rospy.init_node("odometry_publisher",anonymous=True)
 current_time = rospy.Time.now()

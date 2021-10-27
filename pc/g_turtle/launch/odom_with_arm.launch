@@ -1,0 +1,20 @@
+<launch>
+  <param
+    name="robot_description"
+    textfile="$(find robot_simulation)/urdf/robot_simulation.urdf" />
+  <node name="servo_drive" pkg="arm_control" type="servos_drive.py"/>
+  <node name="camera_client" pkg="arm_control" type="camera_client.py"/>
+  <node name="object_pose_control" pkg="arm_control" type="object_pose_control.py"/>
+  <node name="Arm_control_server" pkg="arm_control" type="Arm_control_server.py"/>
+  <node name="odom" pkg="g_turtle" type="odem.py" output="screen"/>
+  <node pkg="tf" type="static_transform_publisher" name="link1_broadcaster" args="0.084 0 0.017 -1.57 0 -1.9 base_link camera 100" />
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+    respawn="false">
+    <remap from="/joint_states" to="/robot_simulation/joint_states" />
+  </node>
+  <node
+    name="rviz"
+    pkg="rviz"
+    type="rviz"
+    args="-d $(find g_turtle)/config/robot_with_arm.rviz" />
+</launch>

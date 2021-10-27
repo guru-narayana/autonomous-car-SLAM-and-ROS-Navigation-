@@ -1,4 +1,3 @@
-# Node for controlling bot with keyboard 
 #!/usr/bin/env python3
 import keyboard
 import signal
@@ -8,12 +7,10 @@ import sys, select, os
 import tty, termios
 settings = termios.tcgetattr(sys.stdin)
 rospy.init_node("keyboard_control")
-# creating Twist message object
 vel = Twist()
 vel.linear.x = 0
 vel.angular.z = 0
 pub = rospy.Publisher('cmd_vel',Twist, queue_size=10)
-# function that returns the key pressed in keyboard
 def getKey():
     tty.setraw(sys.stdin.fileno())
     rlist, _, _ = select.select([sys.stdin], [], [], 0.1)
@@ -26,8 +23,6 @@ def getKey():
     return key
 while True:
     key = getKey()
-    # setting the linear and angular velocities of bot
-    # based on the key pressed
     if key=="w":
         vel.linear.x = 0.1
         vel.angular.z =0

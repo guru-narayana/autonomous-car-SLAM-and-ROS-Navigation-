@@ -1,0 +1,8 @@
+
+float32[] current_pose
+float32[] goal
+uint8 gripper
+---
+uint8 result
+---
+float32[] status

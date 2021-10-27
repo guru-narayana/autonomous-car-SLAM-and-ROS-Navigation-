@@ -1,4 +1,3 @@
-# odometery node that takes pose as input published by encoders node
 #!/usr/bin/env python
 # importing nesscessry modules
 import rospy
@@ -20,14 +19,12 @@ t = TransformStamped()
 def odom_callback(pose):
     odom_pub = rospy.Publisher("odom",Odometry,queue_size=10)
     odom_broadcaster = tf2_ros.TransformBroadcaster()
-    # making the variables global thus helping in storing the values
     global x,y,theta,current_time,past_time,x_p,y_p,theta_p,v,v_theta
     current_time = rospy.Time.now()
     dt = (current_time-past_time).to_sec()
     x = pose.position.x
     y = pose.position.y
     orientation_list = [pose.orientation.x, pose.orientation.y, pose.orientation.z, pose.orientation.w]
-    #  converting quaternions to euler for calculating angular velocity
     (roll, pitch, yaw) = tf_conversions.transformations.euler_from_quaternion (orientation_list)
     if dt > 1:
     	v = ((x-x_p)/dt)*math.cos((yaw*180)/3.14) + ((y-y_p)/dt)*math.sin((yaw*180)/3.14)
@@ -35,7 +32,6 @@ def odom_callback(pose):
     	x_p = x
     	y_p = y
     theta_p = yaw
-    # assigning the transformation values for transform between base_link and odom
     t.header.stamp = current_time
     t.header.frame_id = "odom"
     t.child_frame_id = "base_link"
@@ -63,6 +59,5 @@ def odom_callback(pose):
 rospy.init_node("odometry_publisher",anonymous=True)
 current_time = rospy.Time.now()
 past_time = rospy.Time.now()
-#subscribing to the output of encoders
 rospy.Subscriber("g_Pose", Pose, odom_callback)
 rospy.spin()

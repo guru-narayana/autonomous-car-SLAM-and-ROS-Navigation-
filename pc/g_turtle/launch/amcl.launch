@@ -1,5 +1,5 @@
 <launch>
-  <arg name="map_file" default="$(find g_turtle)/maps/map_5cm/hall.yaml"/>
+  <arg name="map_file" default="$(find g_turtle)/maps/map_1cm/hall.yaml"/>
 
   <!-- Run the map server -->
   <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />

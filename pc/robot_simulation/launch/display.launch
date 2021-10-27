@@ -1,0 +1,25 @@
+<launch>
+  <arg
+    name="model" />
+  <param
+    name="robot_description"
+    textfile="$(find robot_simulation)/urdf/robot_simulation.urdf" />
+  <node
+    name="joint_state_publisher_gui"
+    pkg="joint_state_publisher_gui"
+    type="joint_state_publisher_gui" >
+    <remap from="/joint_states" to="/robot_simulation/joint_states"/>
+    </node>
+    <node pkg="tf" type="static_transform_publisher" name="link1_broadcaster" args="0.084 0 0.017 -1.57 0 -1.9 base_link camera 100" />
+  <node
+    name="robot_state_publisher"
+    pkg="robot_state_publisher"
+    type="robot_state_publisher" >
+  <remap from="/joint_states" to="/robot_simulation/joint_states"/>
+  </node>
+  <node
+    name="rviz"
+    pkg="rviz"
+    type="rviz"
+    args="-d $(find robot_simulation)/config/robot.rviz" />
+</launch>
